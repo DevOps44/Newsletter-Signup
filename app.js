@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 
+
 const app = express();
 
 //incorporating images and bootstrap into our application into the public folder
@@ -45,19 +46,19 @@ app.post('/', function(req, res) {
   var jsonData = JSON.stringify(data); //parsing the javascript object to json format
 
   //combining keys from config.js
-  var listId = config.listId;
-  var apiKey = config.apiKey;
+//  var listId = config.config.listId;
+//  var apiKey = config.config.apiKey;
 
   var options = {
     //url from mailchimp request example (npm documentation)... url/list/{list_id}
-    url: 'https://us3.api.mailchimp.com/3.0/lists/' + listId,
+    url: 'https://us3.api.mailchimp.com/3.0/lists/31b3e59a84',
     method: 'POST', //default is GET
     //authentication using node - we use headers
     headers: {
       //consists of any string as username & apikey (read mailchimp)
-      "Authorization": "devops44 " + apiKey
+      "Authorization": "devops44 a16780f3e1bcbd7378131b097a26d5bc-us3"
     },
-    //body: jsonData
+    body: jsonData
   };
 
   //NPM Request - read npm documentation
@@ -67,7 +68,8 @@ app.post('/', function(req, res) {
       if (response.statusCode === 200)
         res.sendFile(__dirname + "/success.html");
       else
-        res.sendFile(__dirname + "/failure.html");
+        //res.sendFile(__dirname + "/failure.html");
+        console.log(response.statusCode);
     }
   });
 
