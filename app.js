@@ -44,34 +44,48 @@ app.post('/', function(req, res) {
 
   var jsonData = JSON.stringify(data); //parsing the javascript object to json format
 
+  //combining keys from config.js
+  var listId = config.listId;
+  var apiKey = config.apiKey;
+
   var options = {
     //url from mailchimp request example (npm documentation)... url/list/{list_id}
-    url: 'https://us3.api.mailchimp.com/3.0/lists/31b3e59a84',
+    url: 'https://us3.api.mailchimp.com/3.0/lists/' + listId,
     method: 'POST', //default is GET
     //authentication using node - we use headers
     headers: {
       //consists of any string as username & apikey (read mailchimp)
-      "Authorization": "devops44 e346e603e01a66bb67acb6356defedfb-us3"
+      "Authorization": "devops44 " + apiKey
     },
-    body: jsonData
+    //body: jsonData
   };
 
   //NPM Request - read npm documentation
-  request(options, function(err, res, body) {
-    if (err) return console.log(err); //if an error has occured during request function
-    console.log(res.statusCode);
+  request(options, function(error, response, body) {
+    if (error) res.sendFile(__dirname + "/failure.html"); //if an error has occured during request function
+    else {
+      if (response.statusCode === 200)
+        res.sendFile(__dirname + "/success.html");
+      else
+        res.sendFile(__dirname + "/failure.html");
+    }
   });
 
 });
 
+//post method for the failure button in failure.html
+app.post('/failure', function(req, res){
+  res.redirect('/');
+});
 
+//server listening on port 3000
 app.listen(3000, function() {
   console.log("Server is running on port 3000.");
 });
 
 
 //api key
-//e346e603e01a66bb67acb6356defedfb-us3
+//a16780f3e1bcbd7378131b097a26d5bc-us3
 
 //list-id
 //31b3e59a84
