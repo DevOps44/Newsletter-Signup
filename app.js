@@ -4,7 +4,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 
-
 const app = express();
 
 //incorporating images and bootstrap into our application into the public folder
@@ -80,8 +79,8 @@ app.post('/failure', function(req, res){
   res.redirect('/');
 });
 
-//server listening on port 3000
-app.listen(3000, function() {
+//server listening on port 3000     //generating a dynamic Port
+app.listen(process.env.PORT || 3000, function() {
   console.log("Server is running on port 3000.");
 });
 
